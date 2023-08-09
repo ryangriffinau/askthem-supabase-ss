@@ -1,5 +1,5 @@
 {
-  "name": "@acme/nextjs",
+  "name": "@askthem/nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,11 +13,14 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@acme/api": "^0.1.0",
-    "@acme/auth": "^0.1.0",
-    "@acme/db": "^0.1.0",
+    "@askthem/api": "^0.1.0",
+    "@askthem/auth": "^0.1.0",
+    "@askthem/db": "^0.1.0",
+    "@stripe/stripe-js": "^2.0.0",
     "@supabase/auth-helpers-nextjs": "^0.7.4",
     "@supabase/auth-helpers-react": "^0.4.2",
+    "@supabase/auth-ui-react": "^0.4.2",
+    "@supabase/auth-ui-shared": "^0.1.6",
     "@supabase/supabase-js": "^2.32.0",
     "@t3-oss/env-nextjs": "^0.6.0",
     "@tanstack/react-query": "^4.32.0",
@@ -30,12 +33,13 @@
     "next": "^13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "stripe": "^12.17.0",
     "superjson": "1.13.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@acme/eslint-config": "^0.2.0",
-    "@acme/tailwind-config": "^0.1.0",
+    "@askthem/eslint-config": "^0.2.0",
+    "@askthem/tailwind-config": "^0.1.0",
     "@types/node": "^18.17.1",
     "@types/react": "^18.2.17",
     "@types/react-dom": "^18.2.7",
@@ -49,9 +53,9 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base",
-      "@acme/eslint-config/nextjs",
-      "@acme/eslint-config/react"
+      "@askthem/eslint-config/base",
+      "@askthem/eslint-config/nextjs",
+      "@askthem/eslint-config/react"
     ]
   }
 }

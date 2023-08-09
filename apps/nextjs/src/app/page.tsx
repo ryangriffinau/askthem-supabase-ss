@@ -1,13 +1,12 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { auth } from "@askthem/auth";
 import type { Session } from "@supabase/auth-helpers-nextjs";
 import {
   createClientComponentClient,
   createServerComponentClient,
 } from "@supabase/auth-helpers-nextjs";
-
-import { auth } from "@acme/auth";
 
 import { SignIn, SignOut } from "~/components/auth";
 import { CreatePostForm, PostList } from "./posts";

@@ -1,6 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import type { Database } from "@/types_db";
+import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
+import type { SupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
@@ -9,6 +13,12 @@ import superjson from "superjson";
 
 import { api } from "~/utils/api";
 import { env } from "~/env.mjs";
+
+interface SupabaseContext {
+  supabase: SupabaseClient<Database>;
+}
+
+const Context = createContext<SupabaseContext | undefined>(undefined);
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
@@ -64,3 +74,36 @@ export function TRPCReactProvider(props: {
     </api.Provider>
   );
 }
+
+export function SupabaseProvider({ children }: { children: React.ReactNode }) {
+  const [supabase] = useState(() => createPagesBrowserClient());
+  const router = useRouter();
+
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") router.refresh();
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [router, supabase]);
+
+  return (
+    <Context.Provider value={{ supabase }}>
+      <>{children}</>
+    </Context.Provider>
+  );
+}
+
+export const useSupabase = () => {
+  const context = useContext(Context);
+
+  if (context === undefined) {
+    throw new Error("useSupabase must be used inside SupabaseProvider");
+  }
+
+  return context;
+};
