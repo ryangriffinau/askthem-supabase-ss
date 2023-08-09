@@ -1,5 +1,5 @@
 {
-  "name": "@acme/expo",
+  "name": "@askthem/expo",
   "version": "0.1.0",
   "private": true,
   "main": "index.tsx",
@@ -36,9 +36,9 @@
     "superjson": "1.13.1"
   },
   "devDependencies": {
-    "@acme/api": "^0.1.0",
-    "@acme/eslint-config": "^0.2.0",
-    "@acme/tailwind-config": "^0.1.0",
+    "@askthem/api": "^0.1.0",
+    "@askthem/eslint-config": "^0.2.0",
+    "@askthem/tailwind-config": "^0.1.0",
     "@babel/core": "^7.22.9",
     "@babel/preset-env": "^7.22.9",
     "@babel/runtime": "^7.22.6",
@@ -53,8 +53,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base",
-      "@acme/eslint-config/react"
+      "@askthem/eslint-config/base",
+      "@askthem/eslint-config/react"
     ]
   }
 }

@@ -3,12 +3,26 @@
 This project was started from the app router version of t3-turbo: https://github.com/t3-oss/create-t3-turbo
 Then the Next-Auth was replaced with Supabase Auth.
 
+Prisma:
+
+- Prisma Studio to have UI to manage the db: `npx prisma studio`
+
 ## To Do
 
 [x] supabase setup from Readme
+[] vercel stripe/supabase starter - replace everything
+[] prisma/sb setup
 [] supabase setup from supabase pages router template
 [] go through supabase migration guide to replace any legacy items: https://supabase.com/docs/guides/auth/auth-helpers/nextjs#migration-guide
 [] check twitter clone app for guidance
+[] setup shadcn https://ui.shadcn.com/docs/installation/next
+Transfers from: https://github.com/vercel-labs/ai-chatbot :
+[] /components
+theme: orange, sand, large radii, 105%, solid : https://www.radix-ui.com/themes/playground
+
+Transfers from Stripe/next starter:
+[] /app/account
+
 [] did not transfer anying from \_app.tsx to layout.tsx. Is this where the supabase middleware should come in?
 [] look at notable items:
 [] SessionContextProvider
@@ -29,6 +43,24 @@ Then the Next-Auth was replaced with Supabase Auth.
 - https://app.supabase.com/project/coyjrvzliraguciolgjd/auth/providers
 - https://supabase.com/docs/guides/auth/social-login/auth-google
   []
+  [] change all 'acme' references to 'askthem'
+
+### ask jords
+
+[] the stripe starter component folder structure or more flat? Why the css?
+[] where to set these up?
+Turbo/root?
+next?
+packages?
+What should be installed where? types_db won't generate otherwise? "stripe:listen": "stripe listen --forward-to=localhost:3000/api/webhooks --project-name=saas-starter",
+"generate-types": "npx supabase gen types typescript --project-id YOUR_PROJECT_ID --schema public > types_db.ts"
+[] what about these? https://github.com/vercel-labs/ai-chatbot/tree/main/lib
+[] supabase & prisma?
+[] what goes in packages vs not? e.g. from next-sub-payment temploate, where does
+/app/api,
+/app/auth/callback,
+/supabase
+/utils etc go?
 
 ---
 
@@ -171,7 +203,7 @@ packages
       └─ Typesafe db calls using Prisma
 ```
 
-> In this template, we use `@acme` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@acme/` to something like `@my-company/` / `@project-name/`.
+> In this template, we use `@acme` as a placeholder for package names. As a user, you might want to replace it with your own organization or project name. You can use find-and-replace to change all the instances of `@askthem/` to something like `@my-company/` / `@project-name/`.
 
 ## FAQ
 
