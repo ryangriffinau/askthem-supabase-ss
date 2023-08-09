@@ -4,8 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Stack, useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
-import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
+import { api, type RouterOutputs } from "~/utils/api";
+import { AuthAvatar } from "../components/header";
+
+// import type { RouterOutputs } from "~/utils/api";
 
 function PostCard(props: {
   post: RouterOutputs["post"]["all"][number];
@@ -98,6 +100,18 @@ const Index = () => {
     <SafeAreaView className="bg-[#1F104A]">
       {/* Changes page title visible on the header */}
       <Stack.Screen options={{ title: "Home Page" }} />
+      <Stack.Screen
+        options={{
+          headerLeft: () => <AuthAvatar />,
+          headerTitle: () => (
+            <Text className="text-3xl font-bold text-zinc-200">
+              <Text className="text-fuchsia-500">T3</Text>
+              <Text> x </Text>
+              <Text className="text-emerald-400">Supabase</Text>
+            </Text>
+          ),
+        }}
+      />
       <View className="h-full w-full p-4">
         <Text className="mx-auto pb-2 text-5xl font-bold text-white">
           Create <Text className="text-pink-400">T3</Text> Turbo
