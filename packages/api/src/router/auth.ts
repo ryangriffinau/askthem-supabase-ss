@@ -1,8 +1,14 @@
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const authRouter = createTRPCRouter({
-  getSession: publicProcedure.query(({ ctx }) => {
-    return ctx.session;
+  me: publicProcedure.query(({ ctx }) => {
+    // getSession: publicProcedure.query(({ ctx }) => {
+
+    // supabase
+    return ctx.user;
+
+    // next-auth
+    // return ctx.session;
   }),
   getSecretMessage: protectedProcedure.query(() => {
     // testing type validation of overridden next-auth Session in @askthem/auth package

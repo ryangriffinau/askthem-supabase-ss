@@ -1,5 +1,5 @@
 import { appRouter, createTRPCContext } from "@askthem/api";
-import { auth } from "@askthem/auth";
+// import { auth } from "@askthem/auth";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 export const runtime = "nodejs";
@@ -23,16 +23,16 @@ export function OPTIONS() {
   return response;
 }
 
-const handler = auth(async (req) => {
-  const response = await fetchRequestHandler({
-    endpoint: "/api/trpc",
-    router: appRouter,
-    req,
-    createContext: () => createTRPCContext({ auth: req.auth, req }),
-  });
+// const handler = auth(async (req) => {
+//   const response = await fetchRequestHandler({
+//     endpoint: "/api/trpc",
+//     router: appRouter,
+//     req,
+//     createContext: () => createTRPCContext({ auth: req.auth, req }),
+//   });
 
-  setCorsHeaders(response);
-  return response;
-});
+//   setCorsHeaders(response);
+//   return response;
+// });
 
-export { handler as GET, handler as POST };
+// export { handler as GET, handler as POST };

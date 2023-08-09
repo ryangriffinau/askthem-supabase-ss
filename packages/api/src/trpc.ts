@@ -6,10 +6,15 @@
  * tl;dr - this is where all the tRPC server stuff is created and plugged in.
  * The pieces you will need to use are documented accordingly near the end
  */
-import { auth } from "@askthem/auth";
-import type { Session } from "@askthem/auth";
 import { prisma } from "@askthem/db";
+import {
+  createServerComponentClient,
+  type User,
+} from "@supabase/auth-helpers-nextjs";
+// import { auth } from "@askthem/auth";
+// import type { Session } from "@askthem/auth";
 import { initTRPC, TRPCError } from "@trpc/server";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -23,7 +28,7 @@ import { ZodError } from "zod";
  *
  */
 interface CreateContextOptions {
-  session: Session | null;
+  session: User | null;
 }
 
 /**
@@ -47,19 +52,37 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * process every request that goes through your tRPC endpoint
  * @link https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: {
-  req?: Request;
-  auth?: Session;
-}) => {
-  const session = opts.auth ?? (await auth());
-  const source = opts.req?.headers.get("x-trpc-source") ?? "unknown";
+// with supabase
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+  const supabase = createServerSupabaseClient(opts);
 
-  console.log(">>> tRPC Request from", source, "by", session?.user);
+  // React Native will pass their token through headers,
+  // browsers will have the session cookie set
+  const token = opts.req.headers.authorization;
+
+  const user = token
+    ? await supabase.auth.getUser(token)
+    : await supabase.auth.getUser();
 
   return createInnerTRPCContext({
-    session,
+    user: user.data.user,
   });
 };
+
+// with next-auth
+// export const createTRPCContext = async (opts: {
+//   req?: Request;
+//   auth?: Session;
+// }) => {
+//   const session = opts.auth ?? (await auth());
+//   const source = opts.req?.headers.get("x-trpc-source") ?? "unknown";
+
+//   console.log(">>> tRPC Request from", source, "by", session?.user);
+
+//   return createInnerTRPCContext({
+//     session,
+//   });
+// };
 
 /**
  * 2. INITIALIZATION
@@ -108,13 +131,18 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user) {
+  if (!ctx.user?.id) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
+  // #TO connect this to supabase auth
   return next({
     ctx: {
+      // infers the `user` as non-nullable
+      user: ctx.user,
+
+      // next-auth
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      // session: { ...ctx.session, user: ctx.session.user },
     },
   });
 });
@@ -129,3 +157,6 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+function createServerSupabaseClient(opts: CreateContextOptions) {
+  throw new Error("Function not implemented.");
+}

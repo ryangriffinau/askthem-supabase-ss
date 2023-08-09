@@ -1,7 +1,7 @@
-import baseConfig from "@askthem/tailwind-config";
+// import baseConfig from "@askthem/tailwind-config";
 import type { Config } from "tailwindcss";
 
 export default {
   content: ["./src/**/*.{ts,tsx}"],
-  presets: [baseConfig],
+  // presets: [baseConfig],
 } satisfies Config;

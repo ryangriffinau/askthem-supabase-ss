@@ -1,18 +1,20 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { auth } from "@askthem/auth";
+// import { auth } from "@askthem/auth";
 import type { Session } from "@supabase/auth-helpers-nextjs";
 import {
   createClientComponentClient,
   createServerComponentClient,
 } from "@supabase/auth-helpers-nextjs";
 
-import { SignIn, SignOut } from "~/components/auth";
-import { CreatePostForm, PostList } from "./posts";
+// replace w from STripe example
+// import { SignIn, SignOut } from "~/components/auth";
+import * as posts from "./posts";
 
 export default async function HomePage() {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createServerComponentClient({ cookies });
+  // const supabase = createServerComponentClient<Database>({ cookies });
 
   const {
     data: { session },
@@ -26,9 +28,9 @@ export default async function HomePage() {
         </h1>
         <AuthShowcase session={session} />
 
-        <CreatePostForm />
+        <posts.CreatePostForm />
         <Suspense fallback={<span>Loading...</span>}>
-          <PostList />
+          <posts.PostList />
         </Suspense>
       </div>
     </main>
@@ -56,9 +58,7 @@ function AuthShowcase({ session }: { session: Session | null }) {
       {session && (
         <>
           <p className="text-center text-2xl text-zinc-200">
-            {session && (
-              <span>Logged in as {session?.user_metadata?.name}</span>
-            )}
+            {session && <span>Logged in as {session?.user.email}</span>}
             {/* {secretMessage && <span> - {secretMessage}</span>} */}
           </p>
           <button
